@@ -1,0 +1,215 @@
+- job:
+     name: <%= @job1_name %>
+     defaults: global
+     builders:
+       - shell: |
+           env
+           echo "`date` Running Zuul job unit test"
+           zuul-cloner <%= @zuul_cloner_url %> ${ZUUL_PROJECT}
+           cd $ZUUL_PROJECT
+           ls -la
+     parameters:
+       - string:
+           name: ZUUL_UUID
+           description: "ZUUL_UUID"
+       - string:
+           name: ZUUL_REF
+           description: "ZUUL_REF"
+       - string:
+           name: ZUUL_COMMIT
+           description: "ZUUL_COMMIT"
+       - string:
+           name: ZUUL_PROJECT
+           description: "ZUUL_PROJECT"
+       - string:
+           name: ZUUL_PIPELINE
+           description: "ZUUL_PIPELINE"
+       - string:
+           name: ZUUL_URL
+           description: "ZUUL_URL"
+       - string:
+           name: BASE_LOG_PATH
+           description: "BASE_LOG_PATH"
+       - string:
+           name: LOG_PATH
+           description: "LOG_PATH"
+       - string:
+           name: ZUUL_BRANCH
+           description: "ZUUL_BRANCH"
+       - string:
+           name: ZUUL_CHANGE
+           description: "ZUUL_CHANGE"
+       - string:
+           name: ZUUL_CHANGES
+           description: "ZUUL_CHANGES"
+       - string:
+           name: ZUUL_CHANGE_IDS
+           description: "ZUUL_PATCHSET"
+       - string:
+           name: ZUUL_OLDREV
+           description: "ZUUL_OLDREV"
+       - string:
+           name: ZUUL_NEWREV
+           description: "ZUUL_NEWREV"
+       - string:
+           name: ZUUL_SHORT_OLDREV
+           description: "ZUUL_SHORT_OLDREV"
+       - string:
+           name: ZUUL_SHORT_NEWREV
+           description: "ZUUL_SHORT_NEWREV"
+       - string:
+           name: ZUUL_PATCHSET
+           description: "ZUUL_SHORT_NEWREV"
+- job:
+     name: <%= @job2_name %>
+     defaults: global
+     builders:
+       - shell: |
+           env
+           echo "`date` Running Zuul job unit test"
+           zuul-cloner <%= @zuul_cloner_url %> ${ZUUL_PROJECT}
+           cd $ZUUL_PROJECT
+           /opt/atlassian-cli-5.0.0/atlassian.sh jira --action transitionIssue --issue "TEST-7" --transition "Start Progress"
+           /opt/atlassian-cli-5.0.0/atlassian.sh jira --action addComment --issue "TEST-7" --comment "<%= @zuul_cloner_url %>/#/c/${ZUUL_CHANGE}"
+     parameters:
+       - string:
+           name: ZUUL_UUID
+           description: "ZUUL_UUID"
+       - string:
+           name: ZUUL_REF
+           description: "ZUUL_REF"
+       - string:
+           name: ZUUL_COMMIT
+           description: "ZUUL_COMMIT"
+       - string:
+           name: ZUUL_PROJECT
+           description: "ZUUL_PROJECT"
+       - string:
+           name: ZUUL_PIPELINE
+           description: "ZUUL_PIPELINE"
+       - string:
+           name: ZUUL_URL
+           description: "ZUUL_URL"
+       - string:
+           name: BASE_LOG_PATH
+           description: "BASE_LOG_PATH"
+       - string:
+           name: LOG_PATH
+           description: "LOG_PATH"
+       - string:
+           name: ZUUL_BRANCH
+           description: "ZUUL_BRANCH"
+       - string:
+           name: ZUUL_CHANGE
+           description: "ZUUL_CHANGE"
+       - string:
+           name: ZUUL_CHANGES
+           description: "ZUUL_CHANGES"
+       - string:
+           name: ZUUL_CHANGE_IDS
+           description: "ZUUL_PATCHSET"
+       - string:
+           name: ZUUL_OLDREV
+           description: "ZUUL_OLDREV"
+       - string:
+           name: ZUUL_NEWREV
+           description: "ZUUL_NEWREV"
+       - string:
+           name: ZUUL_SHORT_OLDREV
+           description: "ZUUL_SHORT_OLDREV"
+       - string:
+           name: ZUUL_SHORT_NEWREV
+           description: "ZUUL_SHORT_NEWREV"
+       - string:
+           name: ZUUL_PATCHSET
+           description: "ZUUL_SHORT_NEWREV"
+- job:
+     name: <%= @job3_name %>
+     defaults: global
+     builders:
+       - shell: |
+           env
+           echo "`date` Running Zuul job unit test"
+           zuul-cloner <%= @zuul_cloner_url %> ${ZUUL_PROJECT}
+           cd $ZUUL_PROJECT
+           /opt/atlassian-cli-5.0.0/atlassian.sh jira --action transitionIssue --issue "TEST-7" --transition "Reopen"
+           /opt/atlassian-cli-5.0.0/atlassian.sh jira --action addComment --issue "TEST-7" --comment "<%= @zuul_cloner_url %>/#/c/${ZUUL_CHANGE}"
+     parameters:
+       - string:
+           name: ZUUL_UUID
+           description: "ZUUL_UUID"
+       - string:
+           name: ZUUL_REF
+           description: "ZUUL_REF"
+       - string:
+           name: ZUUL_COMMIT
+           description: "ZUUL_COMMIT"
+       - string:
+           name: ZUUL_PROJECT
+           description: "ZUUL_PROJECT"
+       - string:
+           name: ZUUL_PIPELINE
+           description: "ZUUL_PIPELINE"
+       - string:
+           name: ZUUL_URL
+           description: "ZUUL_URL"
+       - string:
+           name: BASE_LOG_PATH
+           description: "BASE_LOG_PATH"
+       - string:
+           name: LOG_PATH
+           description: "LOG_PATH"
+       - string:
+           name: ZUUL_BRANCH
+           description: "ZUUL_BRANCH"
+       - string:
+           name: ZUUL_CHANGE
+           description: "ZUUL_CHANGE"
+       - string:
+           name: ZUUL_CHANGES
+           description: "ZUUL_CHANGES"
+       - string:
+           name: ZUUL_CHANGE_IDS
+           description: "ZUUL_PATCHSET"
+       - string:
+           name: ZUUL_OLDREV
+           description: "ZUUL_OLDREV"
+       - string:
+           name: ZUUL_NEWREV
+           description: "ZUUL_NEWREV"
+       - string:
+           name: ZUUL_SHORT_OLDREV
+           description: "ZUUL_SHORT_OLDREV"
+       - string:
+           name: ZUUL_SHORT_NEWREV
+           description: "ZUUL_SHORT_NEWREV"
+       - string:
+           name: ZUUL_PATCHSET
+           description: "ZUUL_SHORT_NEWREV"
+- job:
+     name: <%= @job4_name %>
+     defaults: global
+     builders:
+       - shell: |
+           env
+           echo `rm -rf /var/lib/jenkins/jobs/<%= @job4_name %>/workspace/<%= @project_name %>`
+           git clone <%= @zuul_cloner_url %>/<%= @project_name %>
+           cd <%= @project_name %>
+           git merge origin/dev
+           git push --repo http://admin:RqZx2ZaFAyJG+me3m75qgfw9gv86s9GpxDgRnoVRUg@<%= @git_push_url %>/<%= @project_name %>
+           ISSUE=`git log | grep JIRA | awk 'FNR==1{print $1}' | cut -d'_' -f3`
+           if [ ${ISSUE} != "" ]
+           then
+           echo "in"
+           /opt/atlassian-cli-5.0.0/atlassian.sh jira --action transitionIssue --issue "TEST-7" --transition "DONE" --comment "<%= @zuul_cloner_url %>/#/c/${ZUUL_CHANGE}" --resolution "Fixed"
+           else
+           echo "Issue Not Found in commit message"
+           fi
+- project:
+    name: <%= @project_name %>
+    node: <%= @node %>
+    jobs:
+       - <%= @job4_name %>
+       - <%= @job1_name %>
+       - <%= @job2_name %>
+       - <%= @job3_name %>

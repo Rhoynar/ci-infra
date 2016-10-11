@@ -1,0 +1,16 @@
+{
+  "Gemfile": "5d11f05acc5026e6159dc47adf7648e9",
+  "README": "0b43e2a689bd77199c18fbb80fd6db27",
+  "Rakefile": "ef174d91ff3f95a06b4ff2abbb520d80",
+  "manifests/config.pp": "974d1cd779ef4e764dc13141c1cab74e",
+  "manifests/folder.pp": "9d866efa70a0f2abfb160dc261e72b40",
+  "manifests/hook.pp": "c99929ef18acb1b3256825ff67b2f5c0",
+  "manifests/init.pp": "08f8e7bdf0def1eeaefb8449b86a6c54",
+  "manifests/params.pp": "0d86aaaa86c7574a5f72181a1d881d95",
+  "manifests/plugin.pp": "35a0d44bef45fd06a01af87e1e3f78f9",
+  "manifests/repository.pp": "8c4ff8a85c1f3a4e6143484c8ebbee61",
+  "metadata.json": "4f89601cd19bb57b5d1132eaefce6248",
+  "spec/classes/gerrit_spec.rb": "fa4c4e99f79459abb4654f17c1807863",
+  "spec/spec_helper.rb": "235e11c1fdc587684592a9ecffc2a85a",
+  "tests/init.pp": "06b76db07cc007417450ef3e9ff712eb"
+}

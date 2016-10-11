@@ -1,0 +1,143 @@
+- job:
+     name: dev-unit-tests-before-merge-prod
+     defaults: global
+     builders:
+       - shell: |
+           env
+           echo "`date` Running Zuul job unit test"
+           zuul-cloner http://agent3.example.com:8090 ${ZUUL_PROJECT}
+           cd $ZUUL_PROJECT
+           ls -la
+     parameters:
+       - string:
+           name: ZUUL_UUID
+           description: "ZUUL_UUID"
+       - string:
+           name: ZUUL_REF
+           description: "ZUUL_REF"
+       - string:
+           name: ZUUL_COMMIT
+           description: "ZUUL_COMMIT"
+       - string:
+           name: ZUUL_PROJECT
+           description: "ZUUL_PROJECT"
+       - string:
+           name: ZUUL_PIPELINE
+           description: "ZUUL_PIPELINE"
+       - string:
+           name: ZUUL_URL
+           description: "ZUUL_URL"
+       - string:
+           name: BASE_LOG_PATH
+           description: "BASE_LOG_PATH"
+       - string:
+           name: LOG_PATH
+           description: "LOG_PATH"
+       - string:
+           name: ZUUL_BRANCH
+           description: "ZUUL_BRANCH"
+       - string:
+           name: ZUUL_CHANGE
+           description: "ZUUL_CHANGE"
+       - string:
+           name: ZUUL_CHANGES
+           description: "ZUUL_CHANGES"
+       - string:
+           name: ZUUL_CHANGE_IDS
+           description: "ZUUL_PATCHSET"
+       - string:
+           name: ZUUL_OLDREV
+           description: "ZUUL_OLDREV"
+       - string:
+           name: ZUUL_NEWREV
+           description: "ZUUL_NEWREV"
+       - string:
+           name: ZUUL_SHORT_OLDREV
+           description: "ZUUL_SHORT_OLDREV"
+       - string:
+           name: ZUUL_SHORT_NEWREV
+           description: "ZUUL_SHORT_NEWREV"
+- job:
+     name: dev-unit-test-patchset
+     defaults: global
+     builders:
+       - shell: |
+           env
+           echo "`date` Running Zuul job unit test"
+           zuul-cloner http://agent3.example.com:8090 ${ZUUL_PROJECT}
+           cd $ZUUL_PROJECT
+           ls -la
+     parameters:
+       - string:
+           name: ZUUL_UUID
+           description: "ZUUL_UUID"
+       - string:
+           name: ZUUL_REF
+           description: "ZUUL_REF"
+       - string:
+           name: ZUUL_COMMIT
+           description: "ZUUL_COMMIT"
+       - string:
+           name: ZUUL_PROJECT
+           description: "ZUUL_PROJECT"
+       - string:
+           name: ZUUL_PIPELINE
+           description: "ZUUL_PIPELINE"
+       - string:
+           name: ZUUL_URL
+           description: "ZUUL_URL"
+       - string:
+           name: BASE_LOG_PATH
+           description: "BASE_LOG_PATH"
+       - string:
+           name: LOG_PATH
+           description: "LOG_PATH"
+       - string:
+           name: ZUUL_BRANCH
+           description: "ZUUL_BRANCH"
+       - string:
+           name: ZUUL_CHANGE
+           description: "ZUUL_CHANGE"
+       - string:
+           name: ZUUL_CHANGES
+           description: "ZUUL_CHANGES"
+       - string:
+           name: ZUUL_CHANGE_IDS
+           description: "ZUUL_PATCHSET"
+       - string:
+           name: ZUUL_OLDREV
+           description: "ZUUL_OLDREV"
+       - string:
+           name: ZUUL_NEWREV
+           description: "ZUUL_NEWREV"
+       - string:
+           name: ZUUL_SHORT_OLDREV
+           description: "ZUUL_SHORT_OLDREV"
+       - string:
+           name: ZUUL_SHORT_NEWREV
+           description: "ZUUL_SHORT_NEWREV"
+- job:
+     name: copy-dev-merge-to-prod
+     defaults: global
+     builders:
+       - shell: |
+           env
+           git clone http://agent3.example.com:8090/final-test
+           cd final-test
+           git merge origin/dev
+           git push --repo http://admin:RqZx2ZaFAyJG+me3m75qgfw9gv86s9GpxDgRnoVRUg@agent3.example.com:8090/final-test
+           ISSUE=`git log | grep JIRA | awk 'FNR==1{print $1}' | cut -d'_' -f3`
+           if [ ${ISSUE} != "" ]
+           then
+           echo "in"
+           /opt/atlassian-cli-5.0.0/atlassian.sh jira --action transitionIssue --issue "TEST-7" --transition "DONE" --resolution "Fixed" --continue
+           else
+           echo "Issue Not Found in commit message"
+           fi
+- project:
+    name: final-test
+    node: master
+    jobs:
+       - copy-dev-merge-to-prod
+       - dev-unit-tests-before-merge-prod
+       - dev-unit-test-patchset

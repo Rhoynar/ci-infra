@@ -1,0 +1,60 @@
+#!/bin/bash
+# This script is managed by puppet - DO NOT MODIFY
+#
+#
+# This script makes it easier to manage cli version, user, and password settings for various CLIs
+# Customize this for your installation. Be careful on upgrades or rename it to something else.
+#
+# Examples:
+#     atlassian.sh confluence --action getServerInfo
+#     atlassian.sh jira --action getServerInfo
+#     atlassian myOtherConfluence --action getServerInfo
+#
+
+application=$1
+
+user=<%= scope.lookupvar('acli::user') %>
+password=<%= scope.lookupvar('acli::password') %>
+
+<% el = '' -%>
+<% if scope.lookupvar('acli::confluence_server') != '' -%>
+if [ "$application" = "confluence" ]; then
+    string="confluence-cli-<%= scope.lookupvar('acli::version') %>.jar --server <%= scope.lookupvar('acli::confluence_server') %> --user $user --password $password"
+    <% el = 'el' -%>
+<% end -%>
+<% if scope.lookupvar('acli::jira_server') != '' -%>
+<%= el %>if [ "$application" = "jira" ]; then
+    string="jira-cli-<%= scope.lookupvar('acli::version') %>.jar --server <%= scope.lookupvar('acli::jira_server') %> --user $user --password $password"
+    <% el = 'el' -%>
+<% end -%>
+<% if scope.lookupvar('acli::fisheye_server') != '' -%>
+<%= el %>if [ "$application" = "fisheye" ]; then
+    string="fisheye-cli-<%= scope.lookupvar('acli::version') %>.jar --server <%= scope.lookupvar('acli::fisheye_server') %> --user $user --password $password"
+    <% el = 'el' -%>
+<% end -%>
+<% if scope.lookupvar('acli::crucible_server') != '' -%>
+<%= el %>if [ "$application" = "crucible" ]; then
+    string="crucible-cli-<%= scope.lookupvar('acli::version') %>.jar --server <%= scope.lookupvar('acli::crucible_server') %> --user $user --password $password"
+    <% el = 'el' -%>
+<% end -%>
+<% if scope.lookupvar('acli::bamboo_server') != '' -%>
+<%= el %>if [ "$application" = "bamboo" ]; then
+    string="bamboo-cli-<%= scope.lookupvar('acli::version') %>.jar --server <%= scope.lookupvar('acli::bamboo_server') %> --user $user --password $password"
+    <% el = 'el' -%>
+<% end -%>
+<% if scope.lookupvar('acli::stash_server') != '' -%>
+<%= el %>if [ "$application" = "stash" ]; then
+    string="stash-cli-<%= scope.lookupvar('acli::version') %>.jar --server <%= scope.lookupvar('acli::stash_server') %> --user $user --password $password"
+    <% el = 'el' -%>
+<% end -%>
+<%= el %>if [ "$application" = "" ]; then
+    echo "Missing application parameter. Specify an application like confluence, jira, or similar."
+    echo "$0 <application name> <application specific parameters>"
+    exit -99
+else
+    echo "Application $application not found or ${application}_server not configured in puppet"
+    echo "Command was $0"
+    exit -99
+fi
+
+java -jar `dirname $0`/lib/$string "${@:2}"

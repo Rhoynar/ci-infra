@@ -1,0 +1,9 @@
+Host *
+   StrictHostKeyChecking no
+   GSSAPIAuthentication no
+   ControlMaster auto
+   ControlPath ~/.ssh/master-%r@%h:%p
+   GSSAPIDelegateCredentials no
+   UserKnownHostsFile=/dev/null
+   ServerAliveInterval=10
+   AddressFamily inet

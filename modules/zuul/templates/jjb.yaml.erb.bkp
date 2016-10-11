@@ -1,0 +1,64 @@
+- job:
+     name: <%= @jobs_name %>
+     defaults: global
+     builders:
+       - shell: |
+           env
+           echo "`date` Running Zuul job unit test"
+           zuul-cloner <%= @zuul_cloner_url %> ${ZUUL_PROJECT}
+           cd $ZUUL_PROJECT
+           ls -la
+     parameters:
+       - string:
+           name: ZUUL_UUID
+           description: "ZUUL_UUID"
+       - string:
+           name: ZUUL_REF
+           description: "ZUUL_REF"
+       - string:
+           name: ZUUL_COMMIT
+           description: "ZUUL_COMMIT"
+       - string:
+           name: ZUUL_PROJECT
+           description: "ZUUL_PROJECT"
+       - string:
+           name: ZUUL_PIPELINE
+           description: "ZUUL_PIPELINE"
+       - string:
+           name: ZUUL_URL
+           description: "ZUUL_URL"
+       - string:
+           name: BASE_LOG_PATH
+           description: "BASE_LOG_PATH"
+       - string:
+           name: LOG_PATH
+           description: "LOG_PATH"
+       - string:
+           name: ZUUL_BRANCH
+           description: "ZUUL_BRANCH"
+       - string:
+           name: ZUUL_CHANGE
+           description: "ZUUL_CHANGE"
+       - string:
+           name: ZUUL_CHANGES
+           description: "ZUUL_CHANGES"
+       - string:
+           name: ZUUL_CHANGE_IDS
+           description: "ZUUL_PATCHSET"
+       - string:
+           name: ZUUL_OLDREV
+           description: "ZUUL_OLDREV"
+       - string:
+           name: ZUUL_NEWREV
+           description: "ZUUL_NEWREV"
+       - string:
+           name: ZUUL_SHORT_OLDREV
+           description: "ZUUL_SHORT_OLDREV"
+       - string:
+           name: ZUUL_SHORT_NEWREV
+           description: "ZUUL_SHORT_NEWREV"
+- project:
+    name: <%= @project_name %>
+    node: <%= @node %>
+    jobs:
+       - <%= @jobs_name %>

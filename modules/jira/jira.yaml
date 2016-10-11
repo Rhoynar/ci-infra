@@ -1,0 +1,122 @@
+#-----------------------------------------------------------------------------
+#   Copyright (c) 2012 Bryce Johnson
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#-----------------------------------------------------------------------------
+#
+# 1.) Place this file in your hieradata directory
+# 2.) Modify the database settings below according to your setup
+#
+# Atlassian jira Git Enterprise Source Control Server
+jira::jira_name: jira
+jira::version: 5.1.7
+jira::format: tar.gz
+
+# Directory where the webapp will run from
+jira::installdir: /opt/jira
+# If you can put this on another filesystem, and even better, a fs that's
+# on another physical disk, you will be happier, but not required
+jira::homedir: /opt/jira-home
+# What user should jira run as
+# Puppet will make the user
+jira::user: jira
+jira::group: jira
+
+# Database configuration - please change these according to your setup
+# Comment out or uncomment for your db product as this value is also
+# overloaded as the jdbc driver db
+jira::db: postgresql
+#jira::db: mysql
+#jira::db: oracle
+#jira::db: sqlserver
+
+jira::dbtype: postgres72
+#jira::dbtype: mysql
+#jira::dbtype: mssql
+
+jira::dbdriver: org.postgresql.Driver
+#jira::dbdriver: com.mysql.jdbc.Driver
+#jira::dbdriver: net.sourceforge.jtds.jdbc.Driver
+
+# Change these values to your jira database credentials
+jira::dbuser: jiraadm
+jira::dbpassword: jiraadm
+
+jira::dbname: jira
+# Change port depending on your db product
+jira::dbport: 5432
+#jira::dbport: 3306
+#jira::dbport: 1521
+#jira::dbport: 1433
+
+# Schema
+# Default for postgres
+jira::dbschema: 'public'
+# Default for mssql
+#jira::dbschema: 'dbo'
+
+# The connection pool size
+jira::poolsize: 20
+jira::enable_connection_pooling: false
+jira::pool_min_size: 20
+jira::pool_max_size: 20
+jira::pool_max_wait: 30000
+jira::min_evictable_idle_time: 60000
+jira::pool_max_idle: 20
+jira::pool_remove_abandoned: true
+jira::pool_remove_abandoned_timeout: 300
+jira::pool_test_while_idle: true
+jira::pool_test_on_borrow: true
+
+# Change if your database isn't on localhost.  This module will only check
+# to make sure that the service is running and start it if it is not on
+# localhost db's only.  So if your remote database, which is suggested, isn't
+# available, that's your fault.
+jira::dbserver: localhost
+
+# Tomcat configuration
+# TODO because I'm never a fan of the stock tomcat settings
+jira::javahome: /opt/java/jdk1.6.0_33
+jira::jvm_xmx: 1024m
+jira::jvm_optional: -XX:-HeapDumpOnOutOfMemoryError
+#jira::jvm_optional: -XX:NewSize=256m -XX:MaxNewSize=256m -XX:SurvivorRatio=16
+# the New and SR figures are purely optional
+# for heap dumps add -XX:-HeapDumpOnOutOfMemoryError
+# by default jira has 256m permgen which is a good setting to go with
+jira::download_url: 'https://downloads.atlassian.com/software/jira/downloads/'
+
+# Should puppet manage this service
+#  Boolean dictating if puppet should manage the service
+jira::service_manage: true
+jira::service_ensure: running
+jira::service_enable: true
+
+# Tomcat settings
+jira::tomcat_max_threads:  '150'
+jira::tomcat_accept_count: '100'
+
+# Configure reverse ssl proxy
+jira::proxy:
+  scheme:    'https'
+  proxyName: 'www.exmaple.co.za'
+  proxyPort: '443'
+# Configure AJP port
+jira::ajp: 
+  port:         '8009'
+  redirectPort: '8443'
+  protocol:     'AJP/1.3'
+
+# Optionally, configure AJP parameters the same way you do jira::proxy above
+
+# Configure path attribute for the <Context>
+jira::contextpath: '/jira'

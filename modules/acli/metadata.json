@@ -1,0 +1,42 @@
+{
+  "name": "evenup-acli",
+  "version": "0.1.0",
+  "author": "Justin Lambert <jlambert@letsevenup.com>",
+  "summary": "Manages ACLI and related jobs",
+  "license": "Apache-2.0",
+  "source": "https://github.com/evenup/evenup-acli",
+  "project_page": "https://github.com/evenup/evenup-acli",
+  "issues_url": "https://github.com/evenup/evenup-acli/issues",
+  "tags": [
+    "acli",
+    "jira"
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "10.04",
+        "12.04",
+        "14.04"
+      ]
+    }
+  ],
+  "dependencies": [
+    {"name":"puppetlabs/java","version_requirement":">=1.0.0 <2.0.0"},
+    {"name":"puppetlabs/stdlib","version_requirement":">=3.2.0 <5.0.0"}
+  ]
+}

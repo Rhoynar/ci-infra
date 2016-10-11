@@ -1,0 +1,77 @@
+pipelines:
+  - name: gate
+    description: Changes that have been approved by core developers are enqueued in order in this pipeline
+    success-message: Build succeeded (gate pipeline).
+    failure-message: Build failed (gate pipeline).
+    source: gerrit
+    manager: DependentPipelineManager
+    precedence: high
+    trigger:
+      gerrit:
+        - event: comment-added
+          approval:
+            - code-review: 2
+    start:
+      gerrit:
+        verified: 0
+    success:
+      gerrit:
+#        verified: 2
+        submit: true
+    failure:
+      gerrit:
+        code-review: -2
+
+  - name: check-reject
+    description: Changes that have been rejected by core developers are enqueued in order in this pipeline
+    success-message: Build succeeded (check pipeline).
+    failure-message: Build failed (check pipeline).
+    source: gerrit
+    manager: IndependentPipelineManager
+    precedence: high
+    trigger:
+      gerrit:
+        - event: comment-added
+          approval:
+            - code-review: -1
+        - event: comment-added
+          approval:
+            - code-review: -2
+  - name: check
+    description: This pipeline runs jobs that operate after new patchset created.
+    source: gerrit
+    success-message: Build succeeded (check pipeline).
+    failure-message: Build failed (check pipeline).
+    manager: IndependentPipelineManager
+    trigger:
+      gerrit:
+        - event: patchset-created
+    start:
+      gerrit:
+        verified: 0
+    success:
+      gerrit:
+        code-review: 1
+#        submit: true
+    failure:
+      gerrit:
+        code-review: -1
+  - name: post-merge
+    description: This pipeline runs jobs that operate after changes are merged.
+    manager: IndependentPipelineManager
+    source: gerrit
+    precedence: high
+    trigger:
+      gerrit:
+        - event: change-merged
+
+projects:
+  - name: <%= @project_name %>
+    gate:
+      - <%= @job1_name %>
+    check:
+      - <%= @job2_name %>
+    post-merge:
+      - <%= @job4_name %>
+    check-reject:
+      - <%= @job3_name %>
